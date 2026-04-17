@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-deployment # 쿠버네티스 클러스터 내에서 이 디플로이먼트를 식별하는 고유 이름
+  labels:
+    app: spring-app
+spec:
+  replicas: 3 # 파드의 개수를 3개로 유지
+  selector:
+    matchLabels:
+      app: spring-app
+  template:
+    metadata:
+      labels:
+        app: spring-app
+    spec:
+      containers:
+      - name: spring-boot-container
+        image: hello-k8s-app:v1 # 빌드된 이미지 경로
+        # 외부 인터넷에서 이미지 안 찾고, 로컬에 있는 이미지 강제로 사용
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
